@@ -26,7 +26,7 @@ public class SimulacaoApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		Produto p1 = new Produto(1L, "Produto 1", 18, 70, BigDecimal.valueOf(0.450), BigDecimal.valueOf(5.0));
-		Produto p2 = new Produto(2L, "Produto 1", 71, 75, BigDecimal.valueOf(1.8472), BigDecimal.valueOf(5.0));
+		Produto p2 = new Produto(2L, "Produto 2", 71, 75, BigDecimal.valueOf(1.8472), BigDecimal.valueOf(5.0));
 		produtoRepository.saveAll(Arrays.asList(p1,p2));
 	}
 	 @PostConstruct

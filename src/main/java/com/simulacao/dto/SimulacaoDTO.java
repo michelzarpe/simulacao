@@ -9,23 +9,20 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.simulacao.modal.Simulacao;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-/* 
-
- Os dados de entrada para uma nova simulação são: NOME DA PESSOA, CPF, VALOR
-SEGURADO, NÚMERO CONTRATO EMPRÉSTIMO, DATA FIM DO CONTRATO DE
-EMPRÉSTIMO E DATA NASCIMENTO.
-
- */
+import lombok.ToString;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
+@JsonInclude(value = Include.NON_NULL)
 public class SimulacaoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
@@ -48,5 +45,23 @@ public class SimulacaoDTO implements Serializable {
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", timezone="GMT-3")
 	private Date dataNascimento;
+	
+	private String produtoEscolhido;
+	private Date dataSimulacao;
+	private BigDecimal valorTotalPremio;
 
+	
+	public SimulacaoDTO(Simulacao simulacao) {
+		this.nomePessoa = simulacao.getNomePessoa();
+		this.cpf = simulacao.getCpf();
+		this.valorSegurado = simulacao.getValorSegurado();
+		this.numeroContratoEmprestimo = simulacao.getNumeroContratoEmprestimo();
+		this.fimContratoEmprestimo = simulacao.getFimContratoEmprestimo();
+		this.dataNascimento = simulacao.getDataNascimento();
+		this.produtoEscolhido = simulacao.getProdutoEscolhido().getNome();
+		this.dataNascimento=simulacao.getDataSimulacao();
+		this.valorTotalPremio=simulacao.getValorTotalPremio();
+	}
+	
+	
 }
