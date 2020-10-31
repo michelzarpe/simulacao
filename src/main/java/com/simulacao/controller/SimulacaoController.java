@@ -29,18 +29,10 @@ public class SimulacaoController {
 	public SimulacaoService service;
 	
 	@PostMapping
-	public ResponseEntity<Response<SimulacaoDTO>> create(@Valid @RequestBody SimulacaoDTO objDTO, BindingResult result){
+	public ResponseEntity<?> create(@Valid @RequestBody SimulacaoDTO objDTO){
 		Response<SimulacaoDTO> response = new Response<SimulacaoDTO>();
-		log.info("0 Chegamos até aqui..... "+objDTO.toString());
-		if(result.hasErrors()) {
-			result.getAllErrors().forEach(e -> response.getErrors().add(e.getDefaultMessage()));
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-		}
-		
 		SimulacaoDTO objSaveDTO = service.gerarSimulacaoSalvar(objDTO);
-		log.info("1 Chegamos até aqui..... "+objSaveDTO.toString());
 		response.setData(objSaveDTO);
-		log.info("2 Chegamos até aqui..... "+objSaveDTO.toString());
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 	

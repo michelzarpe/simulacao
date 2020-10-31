@@ -14,6 +14,7 @@ import com.simulacao.modal.Simulacao;
 import com.simulacao.repository.ProdutoRepository;
 import com.simulacao.repository.SimulacaoRepository;
 import com.simulacao.service.SimulacaoService;
+import com.simulacao.service.exception.ObjectNotFoundException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,28 +36,21 @@ public class SimulacaoServiceImp implements SimulacaoService{
 		Integer numeroMeses = null;
 		Double valorParaCalcTotPremio = null;
 		Integer idade = this.idadeCalculada(objDTO.getDataNascimento());
-		log.info("Idade Calculada: "+idade);
+		produtoEscolhido = repositoryProduto.findProdutoByIdade(idade);		
 		
+		if(produtoEscolhido== null) 
+			throw new ObjectNotFoundException("Produto não existe para essa idade "+ Produto.class.getName());
 		
-		if(repositoryProduto.findProdutoByIdade(idade)==null) {
-			log.error("ProdutoEscolhido: null");
-		}else {
-			produtoEscolhido = repositoryProduto.findProdutoByIdade(idade);
-			taxaJuros = produtoEscolhido.getTaxaJuros();
-			numeroMeses = this.getNumeroMes(dataSimulacao, objDTO.getFimContratoEmprestimo());
-		}
-
+		taxaJuros = produtoEscolhido.getTaxaJuros();
+		numeroMeses = this.getNumeroMes(dataSimulacao, objDTO.getFimContratoEmprestimo());
+		valorParaCalcTotPremio = this.getValorParaCalcTotPremio(taxaJuros.doubleValue(), numeroMeses);
+		BigDecimal valorTotalPremio = this.getValorTotalPremio(objDTO.getValorSegurado(),valorParaCalcTotPremio,produtoEscolhido.getValorMinimoPremio());
+		
+		log.info("Idade Calculada: "+idade);				
 		log.warn("ProdutoEscolhido: "+repositoryProduto.findProdutoByIdade(idade).toString());
 		log.warn("Taxa de Juros: "+taxaJuros);
 		log.warn("Numero Meses: "+numeroMeses);
-		if(this.getValorParaCalcTotPremio(taxaJuros.doubleValue(), numeroMeses)<=120) {
-			valorParaCalcTotPremio = this.getValorParaCalcTotPremio(taxaJuros.doubleValue(), numeroMeses);
-			log.warn("Valor Para Calc Tot Premio: "+valorParaCalcTotPremio);
-		}else {
-			log.error("valor maior que 120");
-		}
-		
-		BigDecimal valorTotalPremio = this.getValorTotalPremio(objDTO.getValorSegurado(),valorParaCalcTotPremio,produtoEscolhido.getValorMinimoPremio());
+		log.warn("Valor Para Calc Tot Premio: "+valorParaCalcTotPremio);
 		log.warn("Valor Total Premio "+ valorTotalPremio);
 		
 		Simulacao simulacao = new Simulacao(null,
@@ -69,7 +63,6 @@ public class SimulacaoServiceImp implements SimulacaoService{
 											produtoEscolhido, 
 											dataSimulacao, 
 											valorTotalPremio);
-		
 		repository.save(simulacao);
 		return new SimulacaoDTO(simulacao);
 	}

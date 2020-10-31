@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.simulacao.modal.Simulacao;
+import com.simulacao.validacao.SimulacaoInsert;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,6 +24,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @JsonInclude(value = Include.NON_NULL)
+@SimulacaoInsert
 public class SimulacaoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
