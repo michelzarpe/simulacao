@@ -7,6 +7,7 @@ import java.util.Date;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.br.CPF;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -34,6 +35,7 @@ public class SimulacaoDTO implements Serializable {
 	
 	@NotNull(message = "Valores não podem ser nulos [cpf]")
 	@Length(min = 3, max=12, message = "6 até 12 caracteres [cpf]")
+	@CPF(message="inserir CPF válido")
 	private String cpf;
 	
 	@NotNull(message = "Valores não podem ser nulos [valorSegurado]")

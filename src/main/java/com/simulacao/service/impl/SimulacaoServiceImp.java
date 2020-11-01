@@ -35,6 +35,7 @@ public class SimulacaoServiceImp implements SimulacaoService{
 		BigDecimal taxaJuros = null;
 		Integer numeroMeses = null;
 		Double valorParaCalcTotPremio = null;
+		
 		Integer idade = this.idadeCalculada(objDTO.getDataNascimento());
 		produtoEscolhido = repositoryProduto.findProdutoByIdade(idade);		
 		
@@ -70,7 +71,7 @@ public class SimulacaoServiceImp implements SimulacaoService{
 	protected Integer getNumeroMes(Date dataSimulacao, Date fimContratoEmprestimo) {
 		log.warn("Data Atual: "+dataSimulacao);
 		log.warn("Data Fim Contrato: "+fimContratoEmprestimo);
-	    Long diferencaMeses = (dataSimulacao.getTime() - fimContratoEmprestimo.getTime()) / (1000*60*60*24) / 30;
+		Long diferencaMeses = (fimContratoEmprestimo.getTime()-dataSimulacao.getTime()) / (1000*60*60*24) / 30;
 	    return  Integer.valueOf(diferencaMeses.toString());
 	}
 	
