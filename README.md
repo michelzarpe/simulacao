@@ -23,3 +23,6 @@
 ![Screenshot](postPostman.png)
 2. GET http://localhost:8080/simulacao
 ![Screenshot](lista.png)
+
+
+Eba
